@@ -6,7 +6,6 @@ use Faker\Factory;
 use App\Entity\Book;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-require_once 'vendor/autoload.php';
 
 class AppFixtures extends Fixture
 {
