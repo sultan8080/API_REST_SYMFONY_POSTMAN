@@ -32,6 +32,15 @@ class AuthorController extends AbstractController
         return new JsonResponse($jsonAuthor, Response::HTTP_OK, [], true);
     }
 
+    #[Route('/api/authors/{id}', name: 'deleteAuthor', methods: ['DELETE'])]
+    public function deleteBook(Author $author, EntityManagerInterface $em): JsonResponse
+    {
+        $em->remove($author);
+        $em->flush();
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
     #[Route('/api/authors', name: "createAuthor", methods: ['POST'])]
     public function createBook(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator): JsonResponse
     {
