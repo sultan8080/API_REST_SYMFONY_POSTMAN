@@ -2,16 +2,24 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use Faker\Factory;
+use App\Entity\Book;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+require_once 'vendor/autoload.php';
 
 class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
-
+        $faker = Factory::create();
+        // Création d'une vingtaine de livres ayant pour titre
+        for ($i = 0; $i < 20; $i++) {
+            $livre = new Book;
+            $livre->setTitle($faker->name());
+            $livre->setCoverText($faker->text());
+            $manager->persist($livre);
+        }
         $manager->flush();
     }
 }
