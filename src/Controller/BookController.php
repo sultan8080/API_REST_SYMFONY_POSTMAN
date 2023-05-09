@@ -66,7 +66,6 @@ class BookController extends AbstractController
     }
 
     #[Route('/api/books/{id}', name: "updateBook", methods: ['PUT'])]
-
     public function updateBook(Request $request, SerializerInterface $serializer, Book $currentBook, EntityManagerInterface $em, AuthorRepository $authorRepository): JsonResponse
     {
         $updatedBook = $serializer->deserialize(
