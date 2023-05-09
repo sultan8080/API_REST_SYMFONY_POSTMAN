@@ -6,23 +6,28 @@ use App\Repository\AuthorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AuthorRepository::class)]
 class Author
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    #[Groups(["getBooks", "getAuthors"])]
+    private $id;
 
-    #[ORM\Column(length: 255)]
-    private ?string $firstName = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["getBooks", "getAuthors"])]
+    private $lastName;
 
-    #[ORM\Column(length: 255)]
-    private ?string $lastName = null;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(["getBooks", "getAuthors"])]
+    private $firstName;
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Book::class)]
-    private Collection $books;
+    #[Groups(["getAuthors"])]
+    private $books;
 
     public function __construct()
     {
@@ -34,18 +39,6 @@ class Author
         return $this->id;
     }
 
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName(string $firstName): self
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
     public function getLastName(): ?string
     {
         return $this->lastName;
@@ -54,6 +47,18 @@ class Author
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): self
+    {
+        $this->firstName = $firstName;
 
         return $this;
     }
@@ -69,7 +74,7 @@ class Author
     public function addBook(Book $book): self
     {
         if (!$this->books->contains($book)) {
-            $this->books->add($book);
+            $this->books[] = $book;
             $book->setAuthor($this);
         }
 

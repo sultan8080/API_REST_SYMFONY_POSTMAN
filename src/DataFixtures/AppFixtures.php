@@ -32,7 +32,6 @@ class AppFixtures extends Fixture
             $book->setTitle($faker->sentence(3));
             $book->setCoverText($faker->text());
             // On lie le livre à un auteur pris au hasard dans le tableau des auteurs.
-
             $book->setAuthor($listAuthor[array_rand($listAuthor)]);
             $manager->persist($book);
         }
